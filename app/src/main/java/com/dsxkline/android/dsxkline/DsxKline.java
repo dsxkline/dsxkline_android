@@ -84,7 +84,7 @@ public class DsxKline  extends WebView {
     // 默认主图指标 ["MA"]
     public String[] main = new String[]{"MA"};
     // 默认副图指标 副图数组代表副图数量 ["VOL","MACD"]
-    public String[] sides = new String[]{"VOL","MACD"};
+    public String[] sides = new String[]{"VOL","MACD","RSI"};
     // 昨日收盘价
     public double lastClose;
     // 首次加载回调

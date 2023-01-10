@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DsxKline kline;
     private static String code = "sh000001";
+    // cycle 0=分时图 1=五日 2=日k 3=周k 4=年K，5=1分钟
     private static int cycle = 0;
     private static int page = 1;
     private static JSONArray datas = new JSONArray();
@@ -62,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     getStockDatas(code);
                 } catch (JSONException e) {
+                    // 千万记得手动执行finish，要不然会卡住
+                    kline.finishLoading();
                     e.printStackTrace();
                 }
             }
@@ -73,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     getStockDatas(code);
                 } catch (JSONException e) {
+                    // 千万记得手动执行finish，要不然会卡住
+                    kline.finishLoading();
                     e.printStackTrace();
                 }
             }
@@ -124,12 +129,17 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getQuotes(String code) throws JSONException {
-        List<HqModel> result = QQhq.getQuote(code);
-        if(result!=null){
-            HqModel model = result.get(0);
-            kline.lastClose = Double.parseDouble(model.lastClose);
-            if(cycle==0)getTimeline(code);
-            if(cycle==1)getTimeline5(code);
+        try {
+            List<HqModel> result = QQhq.getQuote(code);
+            if (result != null) {
+                HqModel model = result.get(0);
+                kline.lastClose = Double.parseDouble(model.lastClose);
+                if (cycle == 0) getTimeline(code);
+                if (cycle == 1) getTimeline5(code);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            kline.finishLoading();
         }
 
     }
@@ -153,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
             });
         } catch (JSONException e) {
             e.printStackTrace();
+            kline.finishLoading();
         }
 
     }
