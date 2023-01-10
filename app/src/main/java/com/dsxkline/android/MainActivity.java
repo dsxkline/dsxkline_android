@@ -200,7 +200,12 @@ public class MainActivity extends AppCompatActivity {
         if(cycle==3) cycleName = "week";
         if(cycle==4) cycleName = "month";
         if(cycle==5) cycleName = "m1";
-        List<String> result = QQhq.getkLine(code,cycleName,"","",320,"qfq");
+        List<String> result = null;
+        if (cycle==5){
+            result = QQhq.getMinLine(code,cycleName,320);
+        }else {
+            result = QQhq.getkLine(code, cycleName, "", "", 320, "qfq");
+        }
         if(!result.isEmpty()){
             try {
                 JSONArray data = new JSONArray(result);
